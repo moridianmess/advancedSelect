@@ -88,18 +88,18 @@
 					if(!options.viewButton){
 						$('#button' + id).hide();
 					}else if(options.viewButton){
-						$('#button' + id).on('click', {'self': self, 'id': id}, function(e){
+						$('#button' + id).on( 'click', {'self': self, 'id': id}, function(e){
 							var id = e.data['id'];
 							var self = e.data['self'];
-							self.view(id);
+							self.options.ajaxViewCall( id, self );
 							e.preventDefault();
 							e.stopPropagation();
 						});
 					}
 				}
 				canContinue = null;
-			},																							/// function to launch modal
-			ajaxCall: function( defer, self ){
+			},
+			ajaxCall: function( defer, self ){															/// overrideble function to get data source
 				var options = self.options;
 				/// Get select list from URL
 				ajaxExtend.create().then(function() {
@@ -114,6 +114,22 @@
 							self.ajaxGetComplete(data, xhr, defer);
 						}
 					}, options.element);
+				});
+			},
+			ajaxViewCall: function( id, self ){															/// overrideble function to get view data
+				var options = self.options;
+				/// Get view template
+				ajaxExtend.create().then(function() {
+					ajaxExtend.setExecute({
+						"url": options.ajax.getUrl,
+						"type": "POST",
+						"data": {'id': id},
+						"key": 'getview',
+						"text": "Retrieving Details",
+						"success": function (data, textStatus, xhr) {
+							self.ajaxViewComplete( data, xhr );
+						}
+					});
 				});
 			},
 			disabled: false,																			/// boolean to show whether plugin is disabled
@@ -623,34 +639,26 @@
 			defer.resolve();
 		},
 
-		view: function (id) {
+		ajaxViewComplete: function ( data, xhr ) {
 			var self = this;
 			var options = this.options;
 
-			/// Get view template
-			ajaxExtend.create().then(function() {
-				ajaxExtend.setExecute({
-					"url": options.ajax.getUrl,
-					"type": "POST",
-					"data": {'id': id},
-					"key": 'getview',
-					"text": "Retrieving Details",
-					"success": function (data1, textStatus, xhr) {
+			if (xhr.status == 200) {
+				$('#' + options.templateConfig.infoContentId).show();
+				$('#' + options.templateConfig.infoBackId).show();
 
-						if (xhr.status == 200) {
-							$('#' + options.templateConfig.infoContentId).show();
-							$('#' + options.templateConfig.infoBackId).show();
-
-							$('#' + options.templateConfig.resultsContentId).hide();
-							$('#' + options.templateConfig.searchId).hide();
-							templateEngine.load(options.templateDir + options.theme + '/view.html', data1).then(function(template){
-								$('#' + options.templateConfig.infoContentId).html(template);
-								self.element.trigger('view', {'id': id});
-							});
-						}
-					}
+				$('#' + options.templateConfig.resultsContentId).hide();
+				$('#' + options.templateConfig.searchId).hide();
+				templateEngine.load(options.templateDir + options.theme + '/view.html', data).then(function(template){
+					$('#' + options.templateConfig.infoContentId).html(template);
+					self.element.trigger('view', {'id': id});
 				});
-			});
+			}
+		},
+
+		view: function ( id ) {
+			var self = this;
+			self.options.ajaxViewCall( id, self );
 		},
 
 		searchResults: function( data ){
@@ -1754,7 +1762,7 @@
 		}
 	};
 
-	$.fn[pluginName].version = "0.4.4";
+	$.fn[pluginName].version = "0.4.5";
 	$.fn[pluginName].author = "Marc Evans (moridiweb)";
 
 	var originalVal = $.fn.val;
