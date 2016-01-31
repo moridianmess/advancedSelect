@@ -99,6 +99,23 @@
 				}
 				canContinue = null;
 			},																							/// function to launch modal
+			ajaxCall: function( defer, self ){
+				var options = self.options;
+				/// Get select list from URL
+				ajaxExtend.create().then(function() {
+					ajaxExtend.listExecute({
+						"url": options.ajax.listUrl,
+						"type": "GET",
+						"data": null,
+						"key": 'optionsData',
+						"text": "Retrieving Data",
+						"success": function (data, textStatus, xhr) {
+							/// this call is required if overridden
+							self.ajaxGetComplete(data, xhr, defer);
+						}
+					}, options.element);
+				});
+			},
 			disabled: false,																			/// boolean to show whether plugin is disabled
 			multiSelect: false,																			/// boolean for whether multi select is on
 			zeroValue: true,																			/// boolean for whether to show zero valued options
@@ -149,7 +166,7 @@
 				/// Hide select
 				options.element.hide();
 			} else {
-				alert("this is not a select");
+				console.error("element is not a select");
 			}
 
 			/// Add data for val check
@@ -493,56 +510,8 @@
 					if( options.ajax.listUrl != options.ajax.lastListUrl || $.isEmptyObject(options.ajax.data)) {
 
 						options.ajax.lastListUrl = options.ajax.listUrl;
+						options.ajaxCall(defer, self);
 
-						/// Get select list from URL
-						ajaxExtend.create().then(function() {
-							ajaxExtend.listExecute({
-								"url": options.ajax.listUrl,
-								"type": "GET",
-								"data": null,
-								"key": 'optionsData',
-								"text": "Retrieving Data",
-								"success": function (data, textStatus, xhr) {
-
-									if (xhr.status == 200) {
-										options.ajax.data = data;
-										var spliceArray = [];
-
-										var i = 0;
-										$.each(data['results'], function () {
-											if (this.value == "" && !$.isNumeric(this.value)) {
-												if (this.name == "") {
-													this.name = options.language.buttonText;
-												} else {
-													self.setButtonText(this.name);
-												}
-												if (!options.blankValue) {
-													spliceArray.push(i);
-												}
-											}
-											if (this.value == 0) {
-												//this.name = options.language.buttonText;
-												if (!options.zeroValue) {
-													if (spliceArray.indexOf(i) < 0) {
-														spliceArray.push(i);
-													}
-												}
-											}
-											i++;
-										});
-										i = null;
-
-										$.each(spliceArray, function (key, value) {
-											data['results'].splice(value, 1);
-										});
-										spliceArray = null;
-									}
-
-									self.element.trigger('loadData');
-									defer.resolve();
-								}
-							}, options.element);
-						});
 					}else{
 						defer.resolve();
 					}
@@ -610,6 +579,48 @@
 
 			defer.notify();
 			return promise;
+		},
+
+		ajaxGetComplete: function ( data, xhr, defer ) {
+			var self = this;
+			var options = this.options;
+
+			if (xhr.status == 200) {
+				options.ajax.data = data;
+				var spliceArray = [];
+
+				var i = 0;
+				$.each(data['results'], function () {
+					if (this.value == "" && !$.isNumeric(this.value)) {
+						if (this.name == "") {
+							this.name = options.language.buttonText;
+						} else {
+							self.setButtonText(this.name);
+						}
+						if (!options.blankValue) {
+							spliceArray.push(i);
+						}
+					}
+					if (this.value == 0) {
+						//this.name = options.language.buttonText;
+						if (!options.zeroValue) {
+							if (spliceArray.indexOf(i) < 0) {
+								spliceArray.push(i);
+							}
+						}
+					}
+					i++;
+				});
+				i = null;
+
+				$.each(spliceArray, function (key, value) {
+					data['results'].splice(value, 1);
+				});
+				spliceArray = null;
+			}
+
+			self.element.trigger('loadData');
+			defer.resolve();
 		},
 
 		view: function (id) {
@@ -1743,7 +1754,7 @@
 		}
 	};
 
-	$.fn[pluginName].version = "0.4.3";
+	$.fn[pluginName].version = "0.4.4";
 	$.fn[pluginName].author = "Marc Evans (moridiweb)";
 
 	var originalVal = $.fn.val;
