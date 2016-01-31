@@ -1,0 +1,45 @@
+<div id="{dialogId}" class="modal advancedSelect">
+	<div class="modal-dialog">
+		<div class="modal-content modal-header" id="{headerId}">
+			<div id="{searchId}">
+				<div class="row" id="{searchFieldsId}">
+					<div class="input-field col m12" id="{searchCellId}">
+						<i class="mdi mdi-magnify prefix"></i>
+						<input id="{searchInputId}" name="{searchInputId}" type="text" placeholder="Search">
+						<button style="display:none;" id="{searchButtonId}" role="button" class="btn"><i class="mdi mdi-magnify"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-content modal-body" id="{contentId}">
+			<div id="{infoBackId}" class="card-panel blue">
+				<i class="mdi mdi-chevron-left"></i> Back
+			</div>
+			<div class="advancedSelectContent row" id="{resultsContentId}">
+			</div>
+			<div class="advancedSelectInfoContent" id="{infoContentId}"></div>
+		</div>
+		<div id="{footerId}" class="modal-footer">
+			<div class="row">
+				<div class="col s4 left-align">
+					<a id="{allButtonId}" class="waves-effect waves-blue btn">Deselect All</a>
+				</div>
+				<div class="col s8">
+					<a id="{saveButtonId}" class="waves-effect waves-green btn">Set</a>
+					<a class="modal-action modal-close waves-effect waves-orange btn">Cancel</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$('#{buttonId}').leanModal({
+		ready: function (){
+			$('#{elementId}').advancedSelect('reBuild').then(function () {
+				$('#{elementId}').advancedSelect('load').then(function () {
+					$('#{elementId}').advancedSelect('resizeResults');
+				});
+			});
+		}
+	});
+</script>

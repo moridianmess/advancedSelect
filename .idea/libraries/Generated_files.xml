@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/js/jQuery.ajaxExtend.min.js" />
+        <item url="file://$PROJECT_DIR$/js/template.min.js" />
+        <item url="file://$PROJECT_DIR$/js/jQuery.advancedSelect.min.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/js/jQuery.ajaxExtend.min.js" />
+      <root url="file://$PROJECT_DIR$/js/template.min.js" />
+      <root url="file://$PROJECT_DIR$/js/jQuery.advancedSelect.min.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

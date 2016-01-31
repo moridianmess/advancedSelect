@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="../css/bootstrap/advancedSelect.css"  media="screen,projection"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="/js/template.js"></script>
+	<script src="/js/jQuery.ajaxExtend.js"></script>
+	<script src="/js/jQuery.advancedSelect.js"></script>
+	<script>
+		$(document).on('ready', function(){
+			$('select').advancedSelect({
+				theme: "bootstrap",
+				templateDir: "templates/"
+			})
+		});
+	</script>
+</head>
+
+<body>
+	<select id="select1" class="advancedSelect">
+		<option value="">None</option>
+		<option value="1">Left</option>
+		<option value="2">Right</option>
+	</select>
+
+	<select id="select2" class="advancedSelect">
+		<option value="">None</option>
+		<optgroup value="a" label="Horizontal">
+			<option value="1">Left</option>
+			<option value="2">Right</option>
+		</optgroup>
+		<optgroup value="b" label="Vertical">
+			<option value="3">Up</option>
+			<option value="4">Down</option>
+		</optgroup>
+	</select>
+
+	<select id="select3" data-ajax-listUrl="json/advancedSelect.json" data-ajax-getUrl="/controllers/test.php?a=get">
+	</select>
+</body>
+</html>

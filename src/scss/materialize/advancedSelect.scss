@@ -1,0 +1,219 @@
+@charset "UTF-8";
+
+// Mixins
+@import "components/mixins";
+@import "components/color";
+@import "helpers/mixins";
+
+// Variables;
+@import "components/variables";
+
+.advancedSelect.modal {
+	z-index: 10001;
+  max-height: 100% !important;
+  overflow: visible;
+}
+
+.advancedSelect.modal .modal-dialog .modal-body {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.advancedSelect.modal .modal-content {
+	background: none;
+}
+
+.advancedSelect.modal .modal-header {
+  background-color: color("grey", "lighten-3");
+  color: $primary-color;
+}
+
+.advancedSelect .advancedSelectContent {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.advancedSelect .advancedSelectContent div {
+	list-style: none;
+	padding: 10px 20px;
+	margin: 0;
+	border-bottom: 1px solid darken($primary-color, 10%);
+	font-weight: bold;
+	display:block;
+	position: relative;
+}
+
+.advancedSelect .advancedSelectContent > div > a.btn-floating {
+  width: 25px;
+  height: 25px;
+  line-height: 29px;
+}
+
+.advancedSelect .advancedSelectContent > div > a.btn-floating i {
+  font-size: 1.2em;
+  line-height: 1.2em;
+}
+
+.advancedSelect .advancedSelectContent > div > i {
+  display: none;
+}
+
+.advancedSelect .advancedSelectContent > div.selected > i {
+  display: block;
+  font-size: 27px;
+  color: $secondary-color;
+}
+
+.advancedSelect .advancedSelectContent div:first-child {
+	border-top: 1px solid darken($primary-color, 10%);
+}
+
+.advancedSelect .advancedSelectContent .group,
+.advancedSelect .advancedSelectContent .group:first-child {
+	padding: 0;
+	border: none;
+	border-bottom: 1px solid darken($primary-color, 10%);
+}
+
+.advancedSelect .advancedSelectContent .group div {
+	text-indent: 10px;
+}
+
+.advancedSelect .advancedSelectContent div:hover {
+	cursor: pointer;
+    background-color: $primary-color;
+    color: color('shades', 'white');
+}
+
+.advancedSelect .advancedSelectContent .group:hover {
+  cursor: default;
+  background: initial;
+  color: initial;
+}
+
+.advancedSelect .advancedSelectContent div:last-child {
+	border-bottom: none;
+}
+
+.advancedSelect .advancedSelectContent .imageContent {
+	height: 20px;
+	box-sizing: content-box;
+}
+
+.advancedSelect .advancedSelectContent .imageContent img {
+	height: 20px;
+	margin-right: 8px;
+	display: inline-block;
+}
+
+.advancedSelect .advancedSelectContent .imageContent span {
+	height: 20px;
+	line-height: 20px;
+	display: inline-block;
+}
+
+.advancedSelect input[placeholder="Search"] {
+	text-shadow: none;
+}
+
+.advancedSelect .advancedSelectContent div i.selection,
+.advancedSelect .advancedSelectContent div input,
+.advancedSelect .advancedSelectContent div .btn {
+	float: right;
+	margin-left: 20px;
+}
+
+.advancedSelect:not(.modal) {
+	padding: 0;
+	overflow: hidden;
+}
+
+.input-group .advancedSelect:not(.modal) .btn,
+.paginate_button .advancedSelect .btn{
+	width: 100%;
+	border-radius: 0;
+	box-shadow: none;
+	border: none;
+}
+
+.advancedSelect:not(.modal) .btn {
+	width: 100%;
+	box-shadow: none;
+	border: none;
+	white-space: normal;
+}
+
+.advancedSelect:not(.modal) > span {
+	padding: $card-padding;
+}
+
+.paginate_button .advancedSelect .btn{
+	border: 1px solid color('grey', 'base');
+}
+
+.advancedSelect:not(.modal) .btn.empty {
+	background-color: color('blue-grey', 'base');
+	color: color('grey', 'darken-3');
+}
+
+.advancedSelect:not(.modal) .btn .caret,
+.paginate_button .advancedSelect .btn .caret{
+	right: 10px;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.advancedSelect .advancedSelectContent div i.selection {
+	display: none;
+}
+
+.advancedSelect .advancedSelectContent div.selected i.selection {
+	display: block;
+	font-size: 19px;
+    color: $secondary-color;
+}
+
+.advancedSelectContent h3 {
+	font-size: 1.2em;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	border-bottom: 1px solid darken($primary-color, 10%);
+	padding: $card-padding;
+	font-weight: bold;
+	border-left: none;
+	border-right: none;
+}
+
+.advancedSelect .advancedSelectContent .group div {
+	padding-left: 20px;
+}
+
+.advancedSelect .alert {
+	cursor: pointer;
+	padding: $card-padding $card-padding;
+}
+
+.advancedSelect span.as-left {
+	width: 40%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.advancedSelect span.as-right {
+	width: 20%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.advancedSelect span.as-right .colour-indicator {
+	width: 100%;
+	height: 20px;
+	display: block;
+	border-radius: 2px;
+	@include box-shadow(0, 1px, 1px, 0, rgba(color('grey', 'base'), 0.7));
+}
+
+.btn-wide {
+  width: 100%;
+}

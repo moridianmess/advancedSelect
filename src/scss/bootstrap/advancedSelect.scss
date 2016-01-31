@@ -1,0 +1,205 @@
+@charset "UTF-8";
+
+// Core variables and mixins
+@import "bootstrap/variables";
+@import "helpers/mixins";
+
+.advancedSelect.modal {
+	z-index: 10001;
+}
+
+.advancedSelect.modal .modal-dialog .modal-body {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.advancedSelect.modal .modal-content {
+	background: #fff;
+}
+
+.advancedSelect.modal .modal-header {
+  background-color: $gray-lighter;
+  color: $brand-primary;
+  border-radius: $border-radius-base $border-radius-base 0 0;
+}
+
+.advancedSelect .advancedSelectContent {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.advancedSelect .advancedSelectContent div {
+	list-style: none;
+	padding: 10px 20px;
+	margin: 0;
+	border-bottom: 1px solid darken($brand-primary, 10%);
+	font-weight: bold;
+	display:block;
+	position: relative;
+}
+
+.advancedSelect .advancedSelectContent div:first-child {
+	border-top: 1px solid darken($brand-primary, 10%);
+}
+
+.advancedSelect .advancedSelectContent .group,
+.advancedSelect .advancedSelectContent .group:first-child {
+	padding: 0;
+	border: none;
+	border-bottom: 1px solid darken($brand-primary, 10%);
+}
+
+.advancedSelect .advancedSelectContent .group div {
+	text-indent: 10px;
+}
+
+.advancedSelect .advancedSelectContent > div > i {
+  display: none;
+}
+
+.advancedSelect .advancedSelectContent > div.selected > i {
+  display: block;
+}
+
+.advancedSelect .advancedSelectContent div:hover {
+	cursor: pointer;
+  background-color: $brand-primary;
+  color: #ffffff;
+}
+
+.advancedSelect .advancedSelectContent .group:hover {
+  cursor: default;
+  background: initial;
+  color: initial;
+}
+
+.advancedSelect .advancedSelectContent div:last-child {
+	border-bottom: none;
+}
+
+.advancedSelect .advancedSelectContent .imageContent {
+	height: 20px;
+	box-sizing: content-box;
+}
+
+.advancedSelect .advancedSelectContent .imageContent img {
+	height: 20px;
+	margin-right: 8px;
+	display: inline-block;
+}
+
+.advancedSelect .advancedSelectContent .imageContent span {
+	height: 20px;
+	line-height: 20px;
+	display: inline-block;
+}
+
+.advancedSelect input[placeholder="Search"] {
+	text-shadow: none;
+}
+
+.advancedSelect .advancedSelectContent div i.selection,
+.advancedSelect .advancedSelectContent div input,
+.advancedSelect .advancedSelectContent div .btn {
+	float: right;
+	margin-left: 20px;
+}
+
+.advancedSelect.form-control {
+	padding: 0;
+	overflow: hidden;
+}
+
+.input-group .advancedSelect.form-control .btn,
+.paginate_button .advancedSelect .btn{
+	width: 100%;
+	border-radius: 0;
+	box-shadow: none;
+	text-align: left;
+	border: none;
+}
+
+.advancedSelect.form-control .btn {
+	width: 100%;
+	box-shadow: none;
+	text-align: left;
+	border: none;
+	min-height: 32px;
+	white-space: normal;
+	padding: $padding-large-vertical $padding-large-horizontal;
+}
+
+.advancedSelect.form-control > span {
+	padding: $padding-large-vertical $padding-large-horizontal;
+}
+
+.paginate_button .advancedSelect .btn{
+	border: 1px solid $gray;
+}
+
+.advancedSelect.form-control .btn.empty {
+	background: none;
+	color: $gray;
+}
+
+.advancedSelect.form-control .btn .caret,
+.paginate_button .advancedSelect .btn .caret{
+	right: 10px;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.advancedSelect .advancedSelectContent div i.selection {
+	display: none;
+}
+
+.advancedSelect .advancedSelectContent div.selected i.selection {
+	display: block;
+	font-size: 19px;
+    color: $brand-info;
+}
+
+.advancedSelectContent h3 {
+	font-size: 1.2em;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	border-bottom: 1px solid darken($brand-info, 10%);
+	padding: $padding-large-vertical $padding-large-horizontal;
+	font-weight: bold;
+	border-left: none;
+	border-right: none;
+}
+
+.advancedSelect .advancedSelectContent .group div {
+	padding-left: 20px;
+}
+
+.advancedSelect .alert {
+	cursor: pointer;
+	padding: $padding-large-vertical $padding-large-horizontal;
+}
+
+.advancedSelect span.as-left {
+	width: 40%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.advancedSelect span.as-right {
+	width: 20%;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.advancedSelect span.as-right .colour-indicator {
+	width: 100%;
+	height: 20px;
+	display: block;
+	border-radius: $border-radius-base;
+	@include box-shadow(0, 1px, 1px, 0, rgba($gray, 0.7));
+}
+
+.btn-wide {
+  width: 100%;
+}

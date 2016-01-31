@@ -1,0 +1,50 @@
+<div class="modal fade advancedSelect in" id="{dialogId}">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header" id="{headerId}">
+				<div id="{searchId}">
+					<div class="row" id="{searchFieldsId}">
+						<div class="col-md-12" id="{searchCellId}">
+							<div class="input-group">
+								<input id="{searchInputId}" name="{searchInputId}" type="text" placeholder="Search" class="form-control">
+								<span class="input-group-btn">
+									<button id="{searchButtonId}" role="button" class="btn btn-info"><i class="glyphicon glyphicon-search"></i></button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body" id="{contentId}">
+				<div id="{infoBackId}" class="alert alert-info">
+					<i class="glyphicon glyphicon-chevron-left"></i> Back
+				</div>
+				<div class="advancedSelectContent row" id="{resultsContentId}">
+				</div>
+				<div class="advancedSelectInfoContent" id="{infoContentId}"></div>
+			</div>
+			<div id="{footerId}" class="modal-footer">
+				<div class="col-xs-4 text-left">
+					<button type="button" id="{allButtonId}" class="btn btn-info">Deselect All</button>
+				</div>
+				<div class="col-xs-8">
+					<button type="button" id="{saveButtonId}" class="btn btn-primary">Set</button>
+					<button type="button" data-dismiss="modal" class="btn btn-warning">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$('#{dialogId}').modal({
+		show: false
+	});
+	$('#{dialogId}').off('shown.bs.modal');
+	$('#{dialogId}').on('shown.bs.modal', {}, function (e) {
+		$('#{elementId}').advancedSelect('reBuild').then(function () {
+			$('#{elementId}').advancedSelect('load').then(function () {
+				$('#{elementId}').advancedSelect('resizeResults');
+			});
+		});
+	});
+</script>
