@@ -1,4 +1,6 @@
 var ajaxExtend = {
+	version: "0.6.6",
+	author: "Marc Evans (moridiweb)",
 	options: {
 		"hide": function(){
 			if(ajaxExtend.options.theme == 'materialize') {
@@ -52,13 +54,15 @@ var ajaxExtend = {
 		"timeout": 1,
 		"theme": "materialize",
 		"templateDir": "/templates/ajaxExtend/",
+		"progressTemplate": "",
 		"templateConfig": {
 			dialogId: "ajaxExtendDialog",
 			bodyId: "ajaxExtendBody",
 			buttonId: "ajaxExtendButton"
 		},
 		"offlineCache": false,
-		"offlineNo": 0
+		"offlineNo": 0,
+		"processRunning": false
 	},
 
 	create: function () {
@@ -66,22 +70,25 @@ var ajaxExtend = {
 		var promise = defer.promise();
 		promise.progress(function() {
 			if( $('#' + ajaxExtend.options.templateConfig.dialogId).length == 0 ) {
-				templateEngine.load(ajaxExtend.options.templateDir + ajaxExtend.options.theme + '/modal.html', ajaxExtend.options.templateConfig, $('body')).then(function () {
-					$('#' + ajaxExtend.options.templateConfig.buttonId)
-						.on('click', {}, function (e) {
-							ajaxExtend.abortAll();
-							ajaxExtend.hide();
+				templateEngine.load(ajaxExtend.options.templateDir + ajaxExtend.options.theme + '/progress.html', {}).then(function(progress) {
+					ajaxExtend.options.progressTemplate = progress;
+					templateEngine.load(ajaxExtend.options.templateDir + ajaxExtend.options.theme + '/modal.html', ajaxExtend.options.templateConfig, $('body')).then(function () {
+						$('#' + ajaxExtend.options.templateConfig.buttonId)
+							.on('click', {}, function (e) {
+								ajaxExtend.abortAll();
+								ajaxExtend.hide();
+							});
+
+						ajaxExtend.hide();
+
+						$(document).ajaxStop(function () {
+							ajaxExtend.options.timeout = setTimeout(function () {
+								ajaxExtend.hide();
+							}, 500);
 						});
-
-					ajaxExtend.hide();
-
-					$(document).ajaxStop(function () {
-						ajaxExtend.options.timeout = setTimeout(function () {
-							ajaxExtend.hide();
-						}, 500);
+						defer.resolve();
+						$(document).trigger('processingCreate');
 					});
-					defer.resolve();
-					$(document).trigger('processingCreate');
 				});
 			}else{
 				defer.resolve();
@@ -96,6 +103,7 @@ var ajaxExtend = {
 		if( $( '#' + ajaxExtend.options.templateConfig.dialogId ).is(':visible') ) {
 			ajaxExtend.options.hide();
 		}
+		ajaxExtend.options.processRunning = false;
 		$(document).trigger('processingHide');
 	},
 
@@ -163,6 +171,7 @@ var ajaxExtend = {
 						url: options.url + queryString,  //Server script to process data
 						type: 'POST',
 						beforeSend: function (x) {
+							ajaxExtend.options.processRunning = true;
 							var i = 0;
 							var key = options.key;
 							/// Get unique key
@@ -308,6 +317,7 @@ var ajaxExtend = {
 				} else {
 
 					var formData = $(":text", $(options.prefix + 'Form')).serializeArray();
+					ajaxExtend.options.processRunning = true;
 
 					if (!$.isEmptyObject(options.data)) {
 						$.each(options.data, function (index, value) {
@@ -403,6 +413,7 @@ var ajaxExtend = {
 						return xhr;
 					},
 					"beforeSend": function (x) {
+						ajaxExtend.options.processRunning = true;
 
 						var i = 0;
 
@@ -996,7 +1007,9 @@ var ajaxExtend = {
 
 		clearTimeout(options.timeout);
 
-		templateEngine.load(ajaxExtend.options.templateDir + ajaxExtend.options.theme + '/progress.html', {"text": text, "id": 'processing-progress_' + val, 'buttonId': "processing-cancel-" + val}, $('#' + ajaxExtend.options.templateConfig.bodyId)).then(function() {
+		ajaxExtend.show();
+
+		templateEngine.load(ajaxExtend.options.progressTemplate, {"text": text, "id": 'processing-progress_' + val, 'buttonId': "processing-cancel-" + val}, $('#' + ajaxExtend.options.templateConfig.bodyId)).then(function() {
 
 			if (typeof text === 'undefined') {
 				text = '';
@@ -1011,8 +1024,6 @@ var ajaxExtend = {
 				/// Hide cancel button if cannot abort
 				$('#' + 'processing-cancel-' + val).hide();
 			}
-
-			ajaxExtend.show();
 
 			$(document).trigger('ajaxStart');
 		});
@@ -1075,6 +1086,12 @@ var ajaxExtend = {
 
 	getLog: function () {
 		return ajaxExtend.options.log;
+	},
+
+	getOpen: function() {
+		var self = this;
+		var options = this.options;
+		return options.processRunning;
 	},
 
 	getStorageByValueObject: function ( value ) {

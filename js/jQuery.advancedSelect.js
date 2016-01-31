@@ -34,7 +34,6 @@
 			theme: 'materialize',																			/// theme
 			viewButton: false,																				/// boolean to show view button
 			viewId: 'value',																				/// key for id
-			viewCallback: function (id) {},																	/// function to run when viewing a record details
 			rowCreatedCallback: function(row, data, self){													/// overridable function to run when row created
 				var id = row.attr('id');
 				var options = self.options;
@@ -100,7 +99,6 @@
 				}
 				canContinue = null;
 			},																							/// function to launch modal
-			rowCallback: function(row, data, self){},													/// function to run when row created
 			disabled: false,																			/// boolean to show whether plugin is disabled
 			multiSelect: false,																			/// boolean for whether multi select is on
 			zeroValue: true,																			/// boolean for whether to show zero valued options
@@ -636,9 +634,7 @@
 							$('#' + options.templateConfig.searchId).hide();
 							templateEngine.load(options.templateDir + options.theme + '/view.html', data1).then(function(template){
 								$('#' + options.templateConfig.infoContentId).html(template);
-								if ($.isFunction(options.viewCallback)) {
-									options.viewCallback(id);
-								}
+								self.element.trigger('view', {'id': id});
 							});
 						}
 					}
@@ -743,9 +739,7 @@
 
 								/// Do row create event
 								options.rowCreatedCallback(row, value, self);
-								if ($.isFunction(options.rowCallback)) {
-									options.rowCallback(row, value, self);
-								}
+								self.element.trigger('rowCreated', {"row": row, "data": value, "self": self} );
 								parentId = null;
 								row = null;
 							}
@@ -1749,7 +1743,7 @@
 		}
 	};
 
-	$.fn[pluginName].version = "0.4.2";
+	$.fn[pluginName].version = "0.4.3";
 	$.fn[pluginName].author = "Marc Evans (moridiweb)";
 
 	var originalVal = $.fn.val;
