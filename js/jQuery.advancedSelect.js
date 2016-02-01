@@ -127,7 +127,7 @@
 						"key": 'getview',
 						"text": "Retrieving Details",
 						"success": function (data, textStatus, xhr) {
-							self.ajaxViewComplete( data, xhr );
+							self.ajaxViewComplete( id, data, xhr );
 						}
 					});
 				});
@@ -642,7 +642,7 @@
 			defer.resolve();
 		},
 
-		ajaxViewComplete: function ( data, xhr ) {
+		ajaxViewComplete: function ( id, data, xhr ) {
 			var self = this;
 			var options = this.options;
 
@@ -706,7 +706,6 @@
 								value['buttonId'] = 'button' + value['value'];
 								/// Replace template variables
 								$.each(value, function (k, v) {
-									template = template.replace('{' + k + '}', v);
 									if( v === undefined ){
 										v = "";
 									}
@@ -717,6 +716,9 @@
 										valueBlank = true;
 									}
 								});
+								options.templateCall( template, value).then(function(newTemplate){
+									template = newTemplate;
+								})
 							} else {
 								/// If this is a group
 								var id = value['value'];
@@ -1765,7 +1767,7 @@
 		}
 	};
 
-	$.fn[pluginName].version = "0.5.0";
+	$.fn[pluginName].version = "0.5.1";
 	$.fn[pluginName].author = "Marc Evans (moridiweb)";
 
 	var originalVal = $.fn.val;
