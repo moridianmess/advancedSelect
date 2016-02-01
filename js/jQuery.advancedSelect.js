@@ -132,6 +132,9 @@
 					});
 				});
 			},
+			templateCall: function( template, data, target ){															/// overrideble function to load templates
+				return templateEngine.load(template, data, target);
+			},
 			disabled: false,																			/// boolean to show whether plugin is disabled
 			multiSelect: false,																			/// boolean for whether multi select is on
 			zeroValue: true,																			/// boolean for whether to show zero valued options
@@ -281,7 +284,7 @@
 
 			promise.progress(function() {
 
-				templateEngine.load(options.templateDir + options.theme + '/inline.html', templateConfig, options.divID).then(function(){
+				options.templateCall(options.templateDir + options.theme + '/inline.html', templateConfig, options.divID).then(function(){
 					$( '#' + templateConfig.spanId ).hide();
 					$( '#' + templateConfig.buttonId )
 						.on('keyup', {'self': self}, function(e){
@@ -297,7 +300,7 @@
 									if ( next.length > 0 ) {
 										var value = next.val();
 									}else{
-										var next = $( '#' + options.element.attr( 'id' ) + ' > option:first' );
+										next = $( '#' + options.element.attr( 'id' ) + ' > option:first' );
 										var value = next.val();
 									}
 									next = null;
@@ -308,7 +311,7 @@
 									if ( prev.length > 0 ) {
 										var value = prev.val();
 									}else{
-										var prev = $( '#' + options.element.attr( 'id' ) + ' > option:last' );
+										prev = $( '#' + options.element.attr( 'id' ) + ' > option:last' );
 										var value = prev.val();
 									}
 									prev = null;
@@ -355,7 +358,7 @@
 			var promise = defer.promise();
 
 			promise.progress(function() {
-				templateEngine.load(options.templateDir + options.theme + '/modal.html', templateConfig, $('body')).then(function() {
+				options.templateCall(options.templateDir + options.theme + '/modal.html', templateConfig, $('body')).then(function() {
 					$('#' + templateConfig.searchInputId).on('keydown', {'self': self}, function (e) {
 						var self = e.data['self'];
 						setTimeout(function () {
@@ -501,7 +504,7 @@
 
 			promise.progress(function() {
 				/// Get row template
-				templateEngine.load(options.ajax.templateUrl, {}).then(function(template){
+				options.templateCall(options.ajax.templateUrl, {}).then(function(template){
 					self.options.ajax.template = template;
 					self.loadData().then(function(){
 						defer.resolve();
@@ -649,7 +652,7 @@
 
 				$('#' + options.templateConfig.resultsContentId).hide();
 				$('#' + options.templateConfig.searchId).hide();
-				templateEngine.load(options.templateDir + options.theme + '/view.html', data).then(function(template){
+				options.templateCall(options.templateDir + options.theme + '/view.html', data).then(function(template){
 					$('#' + options.templateConfig.infoContentId).html(template);
 					self.element.trigger('view', {'id': id});
 				});
@@ -1762,7 +1765,7 @@
 		}
 	};
 
-	$.fn[pluginName].version = "0.4.5";
+	$.fn[pluginName].version = "0.5.0";
 	$.fn[pluginName].author = "Marc Evans (moridiweb)";
 
 	var originalVal = $.fn.val;
